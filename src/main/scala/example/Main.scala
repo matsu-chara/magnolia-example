@@ -1,7 +1,7 @@
 package example
 
 import example.domain.{User, UserId, UserName, UserType}
-import example.dump.MapDump
+import example.dump.{FromDumpedMap, MapDump}
 
 object Main extends App {
   val u1 = User(UserId(1L), UserName("sato"), UserType.Normal)
@@ -15,4 +15,9 @@ object Main extends App {
 //  same as above. but no debug output
 //  (User,Map(id -> (UserId,UserId(1)), name -> (UserName,Map(value -> (string,sato))), tpe -> (Normal,Normal)))
   println(implicitly[MapDump[User]].dumpAsMap(u1))
+
+  // User(UserId(1),UserName(sato),Normal)
+  val dumped = MapDump.gen[User].dumpAsMap(u1)
+  println(FromDumpedMap.gen[User].constructFrom(dumped))
+
 }
